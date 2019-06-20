@@ -211,7 +211,7 @@ OptionParser.new do |parser|
 end.parse!
 
 if options[:card] then 
-  puts "The card with the name is #{get_card_by_name([:card])}"
+  puts "#{get_card_by_name([:card])}"
 else
   options.fetch(:number, 1).times do
     puts "#{ get_random_card() }"
