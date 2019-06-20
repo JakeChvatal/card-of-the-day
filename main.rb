@@ -1,4 +1,4 @@
-#!/usr/bin/ruby1
+#!/usr/bin/ruby
 
 require 'optparse'
 require 'mtg_sdk'
@@ -71,6 +71,9 @@ def wrap_text(result, cardLen, text)
     end
   end
 
+  if $first
+    result << " "
+  end
   space_rest_of_line(result, cardLen - $curLen)
 end
 
