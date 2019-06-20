@@ -43,36 +43,35 @@ def draw_line(result, cardLen, lineStart, lineEnd)
   result = result << line
 end
 
+def space_rest_of_line(result, space_left)
+  $i = 0
+  until $i > space_left + 1 do
+    result = result << " "
+    $i += 1;
+  end
+  result = result << " │\n"
+end
+
 def wrap_text(result, cardLen, text)
   result = result << "│ "
   $curLen = 0
+  $first = true
   text.split(" ").each do |i|
-    if(($curLen + i.length + 1) <(cardLen + 2))
+    if(($curLen + i.length) <(cardLen + 1)) then
       result = result << "#{i} "
       $curLen += (i.length + 1)
     else
-
-      $i = 0
-      $num = cardLen - $curLen
-
-      until $i > $num do
-        result = result << " "
-        $i += 1;
+      if $first then
+        result << " "
+        $first = false
       end
-
-      result << " │\n│ #{i} "
+      space_rest_of_line(result, cardLen - $curLen)
+      result << "│ #{i} "
       $curLen = i.length
     end
   end
 
-  $i = 0
-  $num = cardLen - $curLen
-
-  until $i > $num do
-    result = result << " "
-    $i += 1;
-  end
-  result = result << "│\n"
+  space_rest_of_line(result, cardLen - $curLen)
 end
 
 def make_card(card)
@@ -97,7 +96,7 @@ def make_card(card)
     $i +=1;
   end
   if card.mana_cost
-  line  = line << "#{card.mana_cost} │\n"
+    line  = line << "#{card.mana_cost} │\n"
   else
     line = line << " │\n"
   end
@@ -147,7 +146,7 @@ def make_card(card)
     line ="│"
 
     $subStr = "│ " << card.power << " / "<< card.toughness << " │\n"
-    $realLen = $subStr.length 
+    $realLen = $subStr.length - 6 
     $i = 0
     $num = $max_card_len - $realLen
     until $i > $num do
