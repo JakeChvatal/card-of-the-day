@@ -201,19 +201,11 @@ OptionParser.new do |parser|
     puts parser
   end
 
-  parser.on("-c", "--card CARD", "Prints a specific Magic: The Gathering card.") do |v|
-    options[:card] = v
-  end
-
   parser.on("-n", "--number NUMBER", Integer, "The number of cards to display.") do |v|
     options[:number] = v
   end
 end.parse!
 
-if options[:card] then 
-  puts "#{get_card_by_name([:card])}"
-else
-  options.fetch(:number, 1).times do
-    puts "#{ get_random_card() }"
-  end 
+options.fetch(:number, 1).times do
+  puts "#{ get_random_card() }"
 end
