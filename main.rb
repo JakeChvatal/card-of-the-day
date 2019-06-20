@@ -35,7 +35,7 @@ def draw_line(result, cardLen, lineStart, lineEnd)
   $num = $max_card_len + 2
 
   until $i > $num  do
-    line = line << "──"
+    line = line << "─"
     $i +=1;
   end
 
@@ -43,9 +43,40 @@ def draw_line(result, cardLen, lineStart, lineEnd)
   result = result << line
 end
 
-def make_card(card)
+def wrap_text(result, cardLen, text)
+  result = result << "│ "
+  $curLen = 0
+  text.split(" ").each do |i|
+    if(($curLen + i.length + 1) <(cardLen + 2))
+      result = result << "#{i} "
+      $curLen += (i.length + 1)
+    else
 
-  $name_cost =  "  #{card.name}#{card.mana_cost}   "
+      $i = 0
+      $num = cardLen - $curLen
+
+      until $i > $num do
+        result = result << " "
+        $i += 1;
+      end
+
+      result << " │\n│ #{i} "
+      $curLen = i.length
+    end
+  end
+
+  $i = 0
+  $num = cardLen - $curLen
+
+  until $i > $num do
+    result = result << " "
+    $i += 1;
+  end
+  result = result << "│\n"
+end
+
+def make_card(card)
+  ## $name_cost =  "  #{card.name}#{card.mana_cost}   "
   $max_card_len = 30 # $name_cost.length < card.type.length + 2 ? card.type.length + 2 : $name_cost.length  
   result = ""
 
@@ -56,14 +87,21 @@ def make_card(card)
   line = "│ #{card.name}"
 
   $i = 0
-  $num = $max_card_len - card.name.length - card.mana_cost.length
-
-  until $i > $num do
-    line = line << "  "
-    $i +=1;
+  $num = $max_card_len - card.name.length + 2
+  if card.mana_cost
+    $num = $num - card.mana_cost.length
   end
 
+  until $i > $num do
+    line = line << " "
+    $i +=1;
+  end
+  if card.mana_cost
   line  = line << "#{card.mana_cost} │\n"
+  else
+    line = line << " │\n"
+  end
+
   result = result << line
 
   #third line
@@ -73,10 +111,10 @@ def make_card(card)
   line = "│ #{card.type}"
 
   $i = 0
-  $num = $max_card_len - card.type.length
+  $num = $max_card_len - card.type.length + 3
 
   until $i > $num do
-    line = line << "  "
+    line = line << " "
 
     $i +=1;
   end
@@ -92,25 +130,28 @@ def make_card(card)
   $num = $max_card_len + 2
 
   until $i > $num  do
-    line = line << "──"
+    line = line << "─"
     $i +=1;
   end
 
   line = line << "─┤\n"
   result = result << line
 
-  result = result << "#{card.text}\n"
+  # adds card text if it exists
+  if card.text
+    wrap_text(result, $max_card_len, card.text)
+  end
 
   # puts adds power and toughness if available
   if card.power
-    line ="│ "
+    line ="│"
 
-    $subStr = "│ #{card.power} / #{card.toughness} │\n"
+    $subStr = "│ " << card.power << " / "<< card.toughness << " │\n"
     $realLen = $subStr.length 
     $i = 0
     $num = $max_card_len - $realLen
     until $i > $num do
-      line = line << "  "
+      line = line << " "
       $i +=1;
     end
 
@@ -119,17 +160,17 @@ def make_card(card)
     $num =  $realLen
 
     until $i > $num  do
-      line = line << "──"
+      line = line << "─"
       $i +=1;
     end
 
     line = line << "─┤\n"
 
-    line = line << "│ "
+    line = line << "│"
     $i = 0
     $num = $max_card_len - $realLen
     until $i > $num do
-      line = line << "  "
+      line = line << " "
       $i +=1;
     end
 
@@ -141,7 +182,6 @@ def make_card(card)
   # last line
   draw_line(result, $max_card_len, "└─", "─┘")
 
-  puts card.text
   return result
 end
 
