@@ -1,2 +1,2 @@
-source "https://rubygems.org”
+source :rubygems
 gem 'mtg_sdk'
