@@ -23,19 +23,11 @@ Used as an exercise for learning Ruby as well as developing a package for the AU
 │                           │ * / * │
 └───────────────────────────────────┘
 
-┌───────────────────────────────────┐
-│ Animate Wall                  {W} │
-├───────────────────────────────────┤
-│ Enchantment — Aura                │
-├───────────────────────────────────┤
-│ Enchant Wall Enchanted Wall       │
-│ can attack as though it didn't    │
-│ have defender.                    │
-└───────────────────────────────────┘
-
 ## To Use
+Make sure that Ruby is installed on your system.
 - ```git clone https://github.com/JakeChvatal/card-of-the-day.git```
 - ```cd card-of-the-day```
+- ```bundle install```
 - ```chmod +x card-of-the-day```
 - ```./card-of-the-day```
 #### Optional Arguments:
